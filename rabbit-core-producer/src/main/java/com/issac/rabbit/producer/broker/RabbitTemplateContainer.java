@@ -57,7 +57,7 @@ public class RabbitTemplateContainer implements RabbitTemplate.ConfirmCallback {
         if (rabbitTemplate != null) {
             return rabbitTemplate;
         }
-        log.info("#RabbitTemplateContainer.getTemplate# topic: {} not exist", topic);
+        log.info("#RabbitTemplateContainer.getTemplate# topic: {} not exist, create one", topic);
         RabbitTemplate newTemplate = new RabbitTemplate(connectionFactory);
         newTemplate.setExchange(topic);
         newTemplate.setRoutingKey(message.getRoutingKey());

@@ -2,9 +2,7 @@ package com.issac.rabbit.producer.broker.impl;
 
 import com.issac.rabbit.api.Message;
 import com.issac.rabbit.api.MessageType;
-import com.issac.rabbit.producer.broker.AsyncQueue;
-import com.issac.rabbit.producer.broker.RabbitBroker;
-import com.issac.rabbit.producer.broker.RabbitTemplateContainer;
+import com.issac.rabbit.producer.broker.*;
 import com.issac.rabbit.producer.constant.BrokerMessageConst;
 import com.issac.rabbit.producer.constant.BrokerMessageStatus;
 import com.issac.rabbit.producer.entity.BrokerMessage;
@@ -18,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author: ywy
@@ -44,11 +43,11 @@ public class RabbitBrokerImpl implements RabbitBroker {
         AsyncQueue.submit(new Runnable() {
             @Override
             public void run() {
-                CorrelationData correlationData = new CorrelationData(String.format("%s#%s#%s", message.getMessageId(), System.currentTimeMillis(),message.getMessageType()));
+                CorrelationData correlationData = new CorrelationData(String.format("%s#%s#%s", message.getMessageId(), System.currentTimeMillis(), message.getMessageType()));
                 String routingKey = message.getRoutingKey();
                 RabbitTemplate rabbitTemplate = rabbitTemplateContainer.getTemplate(message);
                 String topic = message.getTopic();
-                rabbitTemplate.convertAndSend("exchange", routingKey, message, correlationData);
+                rabbitTemplate.convertAndSend(topic, routingKey, message, correlationData);
                 log.info("#RabbitBrokerImpl.sendKernel#send to rabbitmq, messageId: {}", message.getMessageId());
             }
         });
@@ -84,5 +83,23 @@ public class RabbitBrokerImpl implements RabbitBroker {
 
         // 2. 发送
         sendKernel(message);
+    }
+
+    @Override
+    public void sendMessages() {
+        List<Message> messages = MessageHolder.clear();
+        messages.forEach(message -> {
+            MessageHolderAsyncQueue.submit(new Runnable() {
+                @Override
+                public void run() {
+                    CorrelationData correlationData = new CorrelationData(String.format("%s#%s#%s", message.getMessageId(), System.currentTimeMillis(), message.getMessageType()));
+                    String routingKey = message.getRoutingKey();
+                    RabbitTemplate rabbitTemplate = rabbitTemplateContainer.getTemplate(message);
+                    String topic = message.getTopic();
+                    rabbitTemplate.convertAndSend(topic, routingKey, message, correlationData);
+                    log.info("#RabbitBrokerImpl.sendKernel#send to rabbitmq, messageId: {}", message.getMessageId());
+                }
+            });
+        });
     }
 }

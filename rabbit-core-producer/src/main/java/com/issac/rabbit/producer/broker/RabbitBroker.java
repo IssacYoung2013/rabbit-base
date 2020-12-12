@@ -2,6 +2,8 @@ package com.issac.rabbit.producer.broker;
 
 import com.issac.rabbit.api.Message;
 
+import java.util.List;
+
 /**
  * @author: ywy
  * @date: 2020-11-21
@@ -25,4 +27,9 @@ public interface RabbitBroker {
      * @param message
      */
     void reliantSend(Message message);
+
+    /**
+     * 批量发送
+     */
+    void sendMessages();
 }

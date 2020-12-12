@@ -47,7 +47,6 @@ public class ElasticJobConfParser implements ApplicationListener<ApplicationRead
 
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
-        log.info("debug");
         try {
 
             ApplicationContext applicationContext = event.getApplicationContext();
@@ -59,7 +58,7 @@ public class ElasticJobConfParser implements ApplicationListener<ApplicationRead
                     String className = clazz.getName();
                     clazz = Class.forName(className.substring(0, className.indexOf("$")));
                 }
-                // 获取接口类型，判断是神了类型的任务
+                // 获取接口类型，判断是什么类型的任务
                 String jobTypeName = clazz.getInterfaces()[0].getSimpleName();
                 // 获取配置项
                 ElasticJobConfig conf = clazz.getAnnotation(ElasticJobConfig.class);

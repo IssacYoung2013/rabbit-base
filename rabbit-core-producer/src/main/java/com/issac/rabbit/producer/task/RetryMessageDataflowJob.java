@@ -49,7 +49,7 @@ public class RetryMessageDataflowJob implements DataflowJob<BrokerMessage> {
     public void processData(ShardingContext shardingContext, List<BrokerMessage> dataList) {
         dataList.forEach(brokerMessage -> {
             String messageId = brokerMessage.getMessageId();
-            if (brokerMessage.getRetryCount() >= MAX_RETRY_COUNT) {
+            if (brokerMessage.getTryCount() >= MAX_RETRY_COUNT) {
                 this.messageStoreService.failure(messageId);
                 log.warn("----- 消息重试最终失败，消息设置为最终失败，消息id:{}", messageId);
             } else {

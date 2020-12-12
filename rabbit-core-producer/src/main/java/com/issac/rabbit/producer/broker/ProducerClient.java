@@ -46,6 +46,10 @@ public class ProducerClient implements MessageProducer {
 
     @Override
     public void send(List<Message> messages) throws MessageRuntimeException {
-
+        messages.forEach(message -> {
+            message.setMessageType(MessageType.RAPID);
+            MessageHolder.add(message);
+            rabbitBroker.sendMessages();
+        });
     }
 }

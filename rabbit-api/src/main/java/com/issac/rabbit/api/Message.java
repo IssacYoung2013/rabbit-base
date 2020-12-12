@@ -48,4 +48,12 @@ public class Message implements Serializable {
      * 消息类型：默认为confirm
      */
     private String messageType = MessageType.CONFIRM;
+
+    public Message(String messageId, String topic, String routingKey, Map<String, Object> attributes, int delayMills) {
+        this.messageId = messageId;
+        this.topic = topic;
+        this.routingKey = routingKey;
+        this.attributes = attributes;
+        this.delayMills = delayMills;
+    }
 }

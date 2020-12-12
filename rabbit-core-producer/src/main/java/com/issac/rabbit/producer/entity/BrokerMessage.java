@@ -16,7 +16,7 @@ public class BrokerMessage implements Serializable {
     private static final long serialVersionUID = 3423874172451731849L;
     private String messageId;
     private Message message;
-    private Integer retryCount = 0;
+    private Integer tryCount = 0;
     private String status;
     private Date nextRetry;
     private Date createTime;

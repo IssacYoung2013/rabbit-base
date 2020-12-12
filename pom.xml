@@ -8,6 +8,7 @@
         <module>rabbit-api</module>
         <module>rabbit-core-producer</module>
         <module>rabbit-task</module>
+        <module>rabbit-test</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -91,6 +92,5 @@
             <version>${fasterxml.uuid.version}</version>
         </dependency>
     </dependencies>
-
 
 </project>

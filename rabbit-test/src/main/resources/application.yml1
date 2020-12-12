@@ -1,0 +1,21 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: test
+  rabbitmq:
+    addresses: localhost:5672
+    username: guest
+    password: guest
+    virtual-host: /
+    connection-timeout: 15000
+    # 是否启用消息确认模式
+    publisher-confirms: true
+    # return消息模式一起同mandatory一起使用
+    publisher-returns: true
+
+elastic:
+  job:
+    zk:
+      server-lists: localhost:2181,localhost:2182,localhost:2183
+      namespace: elastic-job
